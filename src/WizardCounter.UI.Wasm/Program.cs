@@ -24,18 +24,10 @@ services.AddBlazoredLocalStorage(c => c.JsonSerializerOptions = Options.Json);
 services.AddScoped(sp => new HttpClient() { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 services.AddScoped(sp => (IJSInProcessRuntime)sp.GetRequiredService<IJSRuntime>());
 
-var ctx = true;
-var store1 = new TranslateStore();
-var store2 = new TranslateStore();
-
-
 services.AddScoped<TranslateLoader, TranslateHttpLoader>();
-services.AddSingleton<TranslateStore>(sp =>
-{
-    var store = ctx ? store1 : store2;
-    ctx = !ctx;
-    return store;
-});
+#if !DEBUG
+services.AddSingleton(new TranslateHttpLoaderOptions{ Prefix = "/WizardCounter/i18n/" });
+#endif
 services.AddScoped<TranslateService>();
 
 var app = builder.Build();
