@@ -1,0 +1,24 @@
+name: Publish
+
+env:
+  DOTNET_NOLOGO: true
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches: [main, dev]
+  #   paths:
+  #     - "version.json"
+  #     - "src/**/*.cs"
+  #     - "src/**/*.csproj"
+
+jobs:
+  Build:
+    uses: panoukos41/WizardCounter/.github/workflows/_ci.yaml@main
+    with:
+      publish: true
+    secrets: inherit
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
