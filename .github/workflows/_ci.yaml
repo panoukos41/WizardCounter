@@ -66,6 +66,16 @@ jobs:
           .\css.ps1 -publish
           dotnet publish --no-restore
 
+      # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
+      - name: Change base-tag in index.html from / to WizardCounter
+        if: ${{ inputs.publish }}
+        run: sed -i 's/<base href="\/" \/>/<base href="\/WizardCounter\/" \/>/g' artifacts/src/publish/WizardCounter.UI.Wasm/release/wwwroot/index.html
+
+        # copy index.html to 404.html to serve the same file when a file is not found
+      - name: copy index.html to 404.html
+        if: ${{ inputs.publish }}
+        run: cp artifacts/src/publish/WizardCounter.UI.Wasm/release/wwwroot/index.html artifacts/src/publish/WizardCounter.UI.Wasm/release/wwwroot/404.html
+
       - name: Setup Pages
         if: ${{ inputs.publish }}
         uses: actions/configure-pages@v5
