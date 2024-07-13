@@ -21,5 +21,7 @@
   "total-bets": "Total Bets",
   "bets": "Bets",
   "play": "Play",
-  "settings": "Settings"
+  "settings": "Settings",
+  "game-name": "Game Name",
+  "submit": "Submit"
 }

@@ -41,16 +41,18 @@
 </div>
 
 <Modal @ref="NewGameModal" class="self-center min-h-52 flex flex-col">
-    <EditForm Model="NewGame" OnValidSubmit="OnValidSubmit" Context="form">
+    <EditForm class="grow flex flex-col gap-1" Model="NewGame" OnValidSubmit="OnValidSubmit" Context="form">
         <FluentValidator Validator="GameEntry.Validator" />
 
-        <div class="material-input">
-            <label for="NewGame.Name">@("home.form.name" | translate)</label>
-            <InputText @bind-Value="NewGame.Name" />
+        <div class="flex items-center justify-center bg-primary-container rounded h-9 px-2 max-w-max">
+            <label class="text-on-primary text-nowrap font-bold" for="NewGame.Name">@("game-name" | translate)</label>
         </div>
-        <ValidationMessage For="() => NewGame.Name" />
 
-        <Button type="submit" class="btn btn-primary mt-auto">@("submit")</Button>
+        <InputText class="border-primary" @bind-Value="NewGame.Name" />
+
+        <ValidationMessage class="p-2 text-sm text-red-500" For="() => NewGame.Name" />
+
+        <Button type="submit" class="btn btn-primary mt-auto mx-auto w-1/2 h-10">@("submit" | translate)</Button>
     </EditForm>
 </Modal>
 
