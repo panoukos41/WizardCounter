@@ -1,0 +1,72 @@
+﻿@inherits CoreRxComponent<GameViewModel>
+@inject TranslateService translate
+
+<h1 class="text-lg">@("add-users" | translate)</h1>
+
+<div class="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
+    @foreach(var player in ViewModel.Players)
+    {
+        var index = ViewModel.Players.IndexOf(player);
+
+        <div @key="player" class="contents">
+            <div class="flex items-center justify-center bg-primary-container rounded w-9 h-9">
+                <p class="font-bold">@(index + 1)</p>
+            </div>
+            <input class="rounded border-primary" type="text" value="@player.Name" @oninput="e => ChangeName(player, e)" />
+            <Button class="btn btn-danger w-9 h-9" OnClick="() => RemovePlayer(player)">
+                <FaSolidTrash class="icon-sm" />
+            </Button>
+        </div>
+    }
+</div>
+
+<Button class="btn btn-primary mx-auto mt-2 gap-2 h-12" OnClick="AddPlayer">
+    <FaSolidPlus class="icon-sm" />
+    <span>@("add" | translate)</span>
+</Button>
+
+<Button class="btn btn-secondary mx-auto mt-2 gap-2 h-10" OnClick="Start" disabled="@(!IsValid)">
+    <FaSolidFlagCheckered class="icon-sm" />
+    <span>@("start" | translate)</span>
+</Button>
+
+@code {
+    private bool IsValid { get; set; }
+
+    private void AddPlayer()
+    {
+        ViewModel.AddPlayer();
+        Update();
+    }
+
+    private void RemovePlayer(WizardPlayer player)
+    {
+        ViewModel.RemovePlayer(player.Id);
+        Update();
+    }
+
+    private void ChangeName(WizardPlayer player, ChangeEventArgs e)
+    {
+        player.Name = e.Value as string ?? string.Empty;
+        IsValid = ViewModel?.Validate().IsValid is true;
+        Update();
+    }
+
+    private void Start()
+    {
+        if (!IsValid) return;
+
+        ViewModel.Prepare();
+    }
+
+    protected override void OnInitialized()
+    {
+        ViewModel.WhenPropertyChanged
+            .Subscribe(_ =>
+            {
+                IsValid = ViewModel?.Validate().IsValid is true;
+                Update();
+            })
+            .DisposeWith(Disposables);
+    }
+}

@@ -1,0 +1,96 @@
+﻿@page "/"
+
+@inherits CoreComponent
+
+@inject ISyncLocalStorageService storage
+@inject NavigationManager nav
+@inject TranslateService translate
+
+<div class="h-full flex flex-col relative">
+    <div class="grow overflow-y-auto space-y-2">
+        @foreach(var entry in Entries.Items)
+        {
+            <div class="card flex gap-3 items-center" @key="@entry.Id.ToString()">
+                <h2 class="mb-0 me-auto truncate">@entry.Name</h2>
+
+                <Button class="btn btn-danger h-10" OnClick="() => Entries.Remove(entry)">
+                    <FaSolidTrash class="icon-sm" />
+                </Button>
+
+                <Button class="btn btn-primary h-10" OnClick="@(() => nav.NavigateTo($"/{entry.Id}"))"> 
+                    <FaSolidCircleArrowRight class="icon-sm" />
+                </Button>
+            </div>
+        }
+    </div>
+
+    <div class="absolute bottom-1 right-1 flex gap-1 bg-primary rounded-3xl">
+        <Button class="btn w-14 h-14 rounded-3xl" OnClick="() => NewGameModal.Show()">
+            <FaSolidPlus class="icon" />
+        </Button>
+        <div class="border-l border-surface h-8 self-center"></div>
+        <Dropdown>
+            <DropdownButton class="btn w-14 h-14 rounded-3xl">
+                <FaSolidEllipsis class="icon" />
+            </DropdownButton>
+            <DropdownContent class="min-w-52 bg-primary-container px-3 py-2" Anchor="Anchor.Top | Anchor.Right">
+                <DropdownItem OnClick="@(() => nav.NavigateTo("/settings"))"><FaSolidGear class="icon-xs me-2" /> @("settings" | translate)</DropdownItem>
+            </DropdownContent>
+        </Dropdown>
+    </div>
+</div>
+
+<Modal @ref="NewGameModal" class="self-center min-h-52 flex flex-col">
+    <EditForm Model="NewGame" OnValidSubmit="OnValidSubmit" Context="form">
+        <FluentValidator Validator="GameEntry.Validator" />
+
+        <div class="material-input">
+            <label for="NewGame.Name">@("home.form.name" | translate)</label>
+            <InputText @bind-Value="NewGame.Name" />
+        </div>
+        <ValidationMessage For="() => NewGame.Name" />
+
+        <Button type="submit" class="btn btn-primary mt-auto">@("submit")</Button>
+    </EditForm>
+</Modal>
+
+@code {
+    private const string EntriesKey = "games";
+
+    private Modal NewGameModal { get; set; } = null!;
+    private GameEntry NewGame { get; set; } = new(Uuid.NewUuid());
+
+    private SourceList<GameEntry> Entries { get; } = new();
+
+    private void OnValidSubmit()
+    {
+        Entries.Add(NewGame);
+        nav.NavigateTo($"/{NewGame.Id}");
+    }
+
+    protected override void OnInitialized()
+    {
+        ShellContext.Title = "home" | translate;
+
+        Entries.AddRange(storage.GetItem<GameEntry[]>(EntriesKey) ?? []);
+
+        Entries
+            .Connect()
+            .OnItemAdded(entry => storage.TrySetItem(entry.Id, new WizardGame(entry.Id) { Name = entry.Name }))
+            .OnItemRemoved(entry => storage.RemoveItem(entry.Id), invokeOnUnsubscribe: false)
+            .QueryWhenChanged()
+            .Do(entries => storage.SetItem(EntriesKey, entries))
+            .Subscribe(_ => Update())
+            .DisposeWith(Disposables);
+    }
+
+    private record GameEntry(Uuid Id) : IValid<GameEntry>
+    {
+        public string Name { get; set; } = string.Empty;
+
+        public  static FluentValidation.IValidator<GameEntry> Validator { get; } = FluentValidation.InlineValidator.For<GameEntry>(data =>
+        {
+            data.RuleFor(x => x.Name).Length(1, 50);
+        });
+    }
+}

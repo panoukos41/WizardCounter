@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>WizardCounter</RootNamespace>
+    <!-- <PublishTrimmed>true</PublishTrimmed> -->
+    <!-- <TrimMode>partial</TrimMode> -->
+    <!--<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>-->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" />
+    <PackageReference Include="Flurl.Http" />
+    <PackageReference Include="Ignis.Components.HeadlessUI" />
+    <PackageReference Include="Ignis.Components.Reactivity" />
+    <PackageReference Include="Ignis.Components.WebAssembly" />
+    <PackageReference Include="Ignis.Utils" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" />
+    <PackageReference Include="OneOf" />
+    <PackageReference Include="P41.FontAwesome" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src-modules\Core\src\Core.Blazor\Core.Blazor.csproj" />
+    <ProjectReference Include="..\WizardCounter.UI\WizardCounter.UI.csproj" />
+  </ItemGroup>
+
+</Project>

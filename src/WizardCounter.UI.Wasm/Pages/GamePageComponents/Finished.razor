@@ -1,0 +1,46 @@
+﻿@inherits CoreRxComponent<GameViewModel>
+@inject TranslateService translate
+
+<div class="flex gap-2 items-center justify-between">
+    <h1 class="text-lg m-0">
+        <span>@("results" | translate)</span>
+        <span>@ViewModel.MaxRounds</span>
+        <span>@("rounds" | translate)</span>
+    </h1>
+</div>
+
+<div class="grid grid-cols-[auto_auto_1fr] gap-2 items-center">
+    <div class="flex items-center justify-center">
+        <FaSolidRankingStar class="icon-sm" />
+    </div>
+    <h2 class="m-0">@("player" | translate)</h2>
+    <h2 class="m-0">@("points" | translate)</h2>
+
+    <div class="col-span-full border-t border-on-surface"></div>
+
+    @{
+        var index = 1;
+    }
+    @foreach (var (playerId, points) in ViewModel.CalculateScore())
+    {
+        var css = index switch
+        {
+            1 => "bg-green-500",
+            2 => "bg-yellow-500",
+            3 => "bg-yellow-700",
+            _ => "bg-gray-500"
+        };
+
+        <div @key="playerId" class="contents">
+            <div class="flex items-center justify-center @css rounded w-9 h-9">
+                <p class="font-bold">@(index++)</p>
+            </div>
+            <div class="flex items-center justify-center @css rounded h-9">
+                <p class="font-bold">@(ViewModel.GetPlayerName(playerId))</p>
+            </div>
+            <div class="flex items-center justify-center bg-primary-container rounded h-9">
+                <p class="font-bold">@(points)</p>
+            </div>
+        </div>
+    }
+</div>

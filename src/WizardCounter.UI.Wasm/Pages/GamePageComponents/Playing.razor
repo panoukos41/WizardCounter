@@ -1,0 +1,14 @@
+﻿@inherits CoreRxComponent<GameViewModel>
+@inject TranslateService translate
+
+<h1 class="text-lg">@("play" | translate)</h1>
+
+<div class="h-2/3 flex flex-col items-center justify-center">
+    <div class="max-h-1/2">
+        <LottiePlayer Source="/lottie/wizard.lottie" AutoPlay Loop />
+    </div>
+    <Button class="btn btn-primary gap-2 mx-auto mt-2 w-1/2 h-10" OnClick="() => ViewModel.Count()">
+        <FaSolidCalculator class="icon-sm" />
+        <span>@("count" | translate)</span>
+    </Button>
+</div>

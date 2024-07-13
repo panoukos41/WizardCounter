@@ -1,0 +1,25 @@
+{
+  "not-found": {
+    "title": "Not Found",
+    "description": "Sorry, there is nothing at this address."
+  },
+  "home": "home",
+  "counting": "Count",
+  "round": "Round",
+  "total-wins": "Total Wins",
+  "player": "Player",
+  "wins": "Wins",
+  "finish": "Finish",
+  "bet": "Bet",
+  "results": "Results",
+  "rounds": "Rounds",
+  "points": "Points",
+  "add-users": "Add Player",
+  "add": "Add",
+  "start": "Start",
+  "Count": "Count",
+  "total-bets": "Total Bets",
+  "bets": "Bets",
+  "play": "Play",
+  "settings": "Settings"
+}

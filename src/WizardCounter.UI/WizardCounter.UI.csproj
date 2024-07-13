@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>WizardCounter</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Annular.Translate" />
+    <PackageReference Include="DynamicData" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WizardCounter\WizardCounter.csproj" />
+  </ItemGroup>
+
+</Project>

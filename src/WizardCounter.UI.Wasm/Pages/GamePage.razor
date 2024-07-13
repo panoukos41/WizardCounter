@@ -1,0 +1,60 @@
+﻿@page "/{gameId}"
+
+@using WizardCounter.Pages.GamePageComponents
+
+@inherits CoreRxComponent<GameViewModel>
+
+@inject ISyncLocalStorageService storage
+
+@* Not Found  *@
+@if (ViewModel is null)
+{
+    <NotFound />
+    return;
+}
+
+@* Found  *@
+@switch (ViewModel.State)
+{
+    case WizardGameState.Initializing:
+        <Initializing ViewModel="ViewModel" />
+        break;
+    case WizardGameState.Initialized:
+    case WizardGameState.Preparing:
+        <Preparing ViewModel="ViewModel" />
+        break;
+    case WizardGameState.Playing:
+        <Playing ViewModel="ViewModel" />
+        break;
+    case WizardGameState.Counting:
+        <Counting ViewModel="ViewModel" />
+        break;
+    case WizardGameState.Finished:
+        <Finished ViewModel="ViewModel" />
+        break;
+}
+
+@code {
+    [Parameter]
+    public string GameId { get; set; } = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        if (Uuid.TryParse(GameId, out var gameId) is false ||
+            storage.GetItem<WizardGame>(gameId) is not { } game)
+        {
+            return;
+        }
+
+        ViewModel = new(game);
+        ShellContext.Title = game.Name;
+
+        ViewModel.WhenPropertyChanged
+            .Subscribe(_ =>
+            {
+                storage.SetItem(gameId, game);
+                Update();
+            })
+            .DisposeWith(Disposables);
+    }
+}
