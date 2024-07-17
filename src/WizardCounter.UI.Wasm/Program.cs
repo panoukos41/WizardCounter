@@ -25,9 +25,7 @@ services.AddScoped(sp => new HttpClient() { BaseAddress = new Uri(builder.HostEn
 services.AddScoped(sp => (IJSInProcessRuntime)sp.GetRequiredService<IJSRuntime>());
 
 services.AddScoped<TranslateLoader, TranslateHttpLoader>();
-#if !DEBUG
-services.AddSingleton(new TranslateHttpLoaderOptions{ Prefix = "/WizardCounter/i18n/" });
-#endif
+services.AddSingleton(new TranslateHttpLoaderOptions{ Prefix = "i18n/" });
 services.AddScoped<TranslateService>();
 
 var app = builder.Build();

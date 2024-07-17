@@ -17,7 +17,7 @@
                     <FaSolidTrash class="icon-sm" />
                 </Button>
 
-                <Button class="btn btn-primary h-10" OnClick="@(() => nav.NavigateTo($"/{entry.Id}"))"> 
+                <Button class="btn btn-primary h-10" OnClick="@(() => nav.NavigateTo($"{entry.Id}"))"> 
                     <FaSolidCircleArrowRight class="icon-sm" />
                 </Button>
             </div>
@@ -34,7 +34,7 @@
                 <FaSolidEllipsis class="icon" />
             </DropdownButton>
             <DropdownContent class="min-w-52 bg-primary-container px-3 py-2" Anchor="Anchor.Top | Anchor.Right">
-                <DropdownItem OnClick="@(() => nav.NavigateTo("/settings"))"><FaSolidGear class="icon-xs me-2" /> @("settings" | translate)</DropdownItem>
+                <DropdownItem OnClick="@(() => nav.NavigateTo("settings"))"><FaSolidGear class="icon-xs me-2" /> @("settings" | translate)</DropdownItem>
             </DropdownContent>
         </Dropdown>
     </div>
@@ -67,7 +67,7 @@
     private void OnValidSubmit()
     {
         Entries.Add(NewGame);
-        nav.NavigateTo($"/{NewGame.Id}");
+        nav.NavigateTo($"{NewGame.Id}");
     }
 
     protected override void OnInitialized()
