@@ -29,14 +29,9 @@
             <FaSolidPlus class="icon" />
         </Button>
         <div class="border-l border-surface h-8 self-center"></div>
-        <Dropdown>
-            <DropdownButton class="btn w-14 h-14 rounded-3xl">
-                <FaSolidEllipsis class="icon" />
-            </DropdownButton>
-            <DropdownContent class="min-w-52 bg-primary-container px-3 py-2" Anchor="Anchor.Top | Anchor.Right">
-                <DropdownItem OnClick="@(() => nav.NavigateTo("settings"))"><FaSolidGear class="icon-xs me-2" /> @("settings" | translate)</DropdownItem>
-            </DropdownContent>
-        </Dropdown>
+        <a class="btn w-14 h-14 rounded-3xl" href="settings">
+            <FaSolidGear class="icon" />
+        </a>
     </div>
 </div>
 
@@ -44,13 +39,13 @@
     <EditForm class="grow flex flex-col gap-1" Model="NewGame" OnValidSubmit="OnValidSubmit" Context="form">
         <FluentValidator Validator="GameEntry.Validator" />
 
-        <div class="flex items-center justify-center bg-primary-container rounded h-9 px-2 max-w-max">
-            <label class="text-on-primary text-nowrap font-bold" for="NewGame.Name">@("game-name" | translate)</label>
+        <div class="flex items-center justify-center h-9 max-w-max bg-primary rounded px-2">
+            <label class="text-nowrap font-bold" for="NewGame.Name">@("game-name" | translate)</label>
         </div>
 
-        <InputText class="border-primary" @bind-Value="NewGame.Name" />
+        <InputText class="bg-surface-bright border-surface focus:outline-none" @bind-Value="NewGame.Name" />
 
-        <ValidationMessage class="p-2 text-sm text-red-500" For="() => NewGame.Name" />
+        <ValidationMessage class="p-2 text-sm text-error" For="() => NewGame.Name" />
 
         <Button type="submit" class="btn btn-primary mt-auto mx-auto w-1/2 h-10">@("submit" | translate)</Button>
     </EditForm>

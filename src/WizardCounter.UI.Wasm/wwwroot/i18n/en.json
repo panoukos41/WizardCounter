@@ -3,7 +3,7 @@
     "title": "Not Found",
     "description": "Sorry, there is nothing at this address."
   },
-  "home": "home",
+  "home": "Home",
   "counting": "Count",
   "round": "Round",
   "total-wins": "Total Wins",
@@ -23,5 +23,9 @@
   "play": "Play",
   "settings": "Settings",
   "game-name": "Game Name",
-  "submit": "Submit"
+  "submit": "Submit",
+  "theme": "Theme",
+  "auto": "Auto",
+  "dark": "Dark",
+  "light": "Light"
 }

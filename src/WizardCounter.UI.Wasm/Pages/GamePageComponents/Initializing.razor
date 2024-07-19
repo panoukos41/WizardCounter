@@ -12,7 +12,7 @@
             <div class="flex items-center justify-center bg-primary-container rounded w-9 h-9">
                 <p class="font-bold">@(index + 1)</p>
             </div>
-            <input class="rounded border-primary" type="text" value="@player.Name" @oninput="e => ChangeName(player, e)" />
+            <input class="rounded bg-surface-bright" type="text" value="@player.Name" @oninput="e => ChangeName(player, e)" />
             <Button class="btn btn-danger w-9 h-9" OnClick="() => RemovePlayer(player)">
                 <FaSolidTrash class="icon-sm" />
             </Button>

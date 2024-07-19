@@ -30,7 +30,7 @@
             <div class="flex items-center justify-center bg-primary-container rounded h-9">
                 <p class="font-bold">@(ViewModel.GetPlayerName(playerId))</p>
             </div>
-            <input class="rounded border-primary" type="number" @bind-value="data.Wins" />
+            <input class="rounded bg-surface-bright" type="number" @bind-value="data.Wins" disabled />
             <Button class="btn btn-primary w-9 h-9" OnClick="() => Increase(data)">
                 <FaSolidPlus class="icon-sm" />
             </Button>

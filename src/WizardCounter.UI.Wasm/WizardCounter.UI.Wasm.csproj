@@ -6,6 +6,7 @@
     <!-- <PublishTrimmed>true</PublishTrimmed> -->
     <!-- <TrimMode>partial</TrimMode> -->
     <!--<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>-->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" />
     <PackageReference Include="OneOf" />
     <PackageReference Include="P41.FontAwesome" />
+    <PackageReference Include="System.Text.Json" />
   </ItemGroup>
 
   <ItemGroup>

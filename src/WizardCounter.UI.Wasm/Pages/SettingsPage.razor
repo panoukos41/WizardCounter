@@ -2,11 +2,37 @@
 @inherits CoreComponent
 @inject TranslateService translate
 
+<div class="space-y-4 divide-y">
+    <div class="space-y-1">
+        <h3>@("theme" | translate)</h3>
+        <div>
+            <select class="w-full rounded bg-primary px-2 py-1" value="@Theme.GetTheme()" @onchange="OnThemeChange">
+                <option value="auto">@("auto" | translate)</option>
+                <option value="dark">@("dark" | translate)</option>
+                <option value="light">@("light" | translate)</option>
+            </select>
+        </div>
+    </div>
+
+</div>
 
 
 @code {
+
+
     protected override void OnInitialized()
     {
         ShellContext.Title = "settings" | translate;
+    }
+
+    public void OnThemeChange(ChangeEventArgs e)
+    {
+        Action execute = e.Value switch
+        {
+            "dark" => Theme.SetDark,
+            "light" => Theme.SetLight,
+            _ => Theme.SetAuto
+        };
+        execute();
     }
 }

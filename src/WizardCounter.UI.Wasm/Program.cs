@@ -8,6 +8,7 @@ using Ignis.Components.WebAssembly;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
+using System.Diagnostics.CodeAnalysis;
 using System.Reactive.Threading.Tasks;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -25,12 +26,14 @@ services.AddScoped(sp => new HttpClient() { BaseAddress = new Uri(builder.HostEn
 services.AddScoped(sp => (IJSInProcessRuntime)sp.GetRequiredService<IJSRuntime>());
 
 services.AddScoped<TranslateLoader, TranslateHttpLoader>();
-services.AddSingleton(new TranslateHttpLoaderOptions{ Prefix = "i18n/" });
+services.AddSingleton(new TranslateHttpLoaderOptions { Prefix = "i18n/" });
 services.AddScoped<TranslateService>();
 
 var app = builder.Build();
 
 await InitializeLang(app);
+await Import();
+
 await app.RunAsync();
 
 static Task InitializeLang(WebAssemblyHost app)
@@ -50,4 +53,10 @@ static Task InitializeLang(WebAssemblyHost app)
     }
     localStorage.SetItem("lang", lang);
     return translate.SetCurrentLang(lang).ToTask();
+}
+
+[SuppressMessage("BroswerPlatform", "CA1416")]
+static Task Import()
+{
+    return Theme.Import();
 }
