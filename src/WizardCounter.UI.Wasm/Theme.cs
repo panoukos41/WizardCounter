@@ -14,7 +14,8 @@ public partial class Theme
         if (Interlocked.Exchange(ref imported, 1) is 1)
             return Task.CompletedTask;
 
-        return JSHost.ImportAsync(name, url ?? "/js/theme.js");
+        // JSHost starts searching from inside _framework folder so we have to go one up.
+        return JSHost.ImportAsync(name, url ?? "../js/theme.js");
     }
 
     [JSImport("updateDom", name)]
