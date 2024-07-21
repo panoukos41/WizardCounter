@@ -1,42 +1,78 @@
-﻿@inherits CoreRxComponent<GameViewModel>
+﻿@inherits CoreRxComponent<WizardGameViewModel>
 @inject TranslateService translate
 
-<h1 class="text-lg">@("add-users" | translate)</h1>
-
-<div class="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
-    @foreach(var player in ViewModel.Players)
-    {
-        var index = ViewModel.Players.IndexOf(player);
-
-        <div @key="player" class="contents">
-            <div class="flex items-center justify-center bg-primary-container rounded w-9 h-9">
-                <p class="font-bold">@(index + 1)</p>
-            </div>
-            <input class="rounded bg-surface-bright" type="text" value="@player.Name" @oninput="e => ChangeName(player, e)" />
-            <Button class="btn btn-danger w-9 h-9" OnClick="() => RemovePlayer(player)">
-                <FaSolidTrash class="icon-sm" />
-            </Button>
-        </div>
-    }
+<div class="flex gap-2 items-center justify-between">
+    <h1 class="text-lg m-0">
+        <span>@("players" | translate)</span>
+    </h1>
 </div>
 
-<Button class="btn btn-primary mx-auto mt-2 gap-2 h-12" OnClick="AddPlayer">
-    <FaSolidPlus class="icon-sm" />
-    <span>@("add" | translate)</span>
-</Button>
+<div class="overflow-y-auto">
+    <div class="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
+        @foreach(var player in ViewModel.Players)
+        {
+            var index = ViewModel.Players.IndexOf(player);
 
-<Button class="btn btn-secondary mx-auto mt-2 gap-2 h-10" OnClick="Start" disabled="@(!IsValid)">
-    <FaSolidFlagCheckered class="icon-sm" />
+            <div @key="player" class="contents">
+                <div class="flex items-center justify-center bg-primary-container rounded w-9 h-9">
+                    <p class="font-bold">@(index + 1)</p>
+                </div>
+                <input class="rounded bg-surface-bright" type="text" value="@player.Name" @oninput="e => ChangeName(player, e)" />
+                <Button class="btn btn-danger w-9 h-9" OnClick="() => RemovePlayer(player)">
+                    <FaSolidTrash class="icon-sm" />
+                </Button>
+            </div>
+        }
+    </div>
+    <Button class="btn btn-primary mx-auto min-w-60 mt-2 gap-2 h-12" OnClick="AddPlayer">
+        <FaSolidPlus class="icon-sm" />
+        <span>@("add" | translate)</span>
+    </Button>
+</div>
+
+<Button class="btn btn-secondary mx-auto min-w-60 my-2 gap-2 h-12" OnClick="Start" disabled="@(!IsValid)">
+    <FaSolidWandMagicSparkles class="icon-sm" />
     <span>@("start" | translate)</span>
 </Button>
 
+
+<Modal @ref="NewPlayerModal" class="self-center min-h-52 flex flex-col" Context="modal">
+    <EditForm class="grow flex flex-col gap-1" Model="NewPlayer" OnValidSubmit="OnValidSubmit" Context="form">
+        <FluentValidator Validator="WizardPlayer.Validator" />
+
+        <div class="flex items-center justify-center h-9 max-w-max bg-primary rounded px-2">
+            <label class="text-nowrap font-bold" for="NewPlayer.Name">@("player-name" | translate)</label>
+        </div>
+
+        <InputText class="bg-surface-bright border-surface focus:outline-none" @bind-Value="NewPlayer.Name" />
+
+        <ValidationMessage class="p-2 text-sm text-error" For="() => NewPlayer.Name" />
+
+        <div class="flex items-center justify-center gap-4">
+            <Button type="button" class="btn btn-danger min-w-24 h-10" OnClick="() => modal.Close()">@("cancel" | translate)</Button>
+
+            <Button type="submit" class="btn btn-primary min-w-24 h-10">@("submit" | translate)</Button>
+        </div>
+    </EditForm>
+</Modal>
+
 @code {
+    private Modal NewPlayerModal { get; set; } = null!;
+    private WizardPlayer NewPlayer { get; set; } = new();
     private bool IsValid { get; set; }
+
+    private void OnValidSubmit()
+    {
+        ViewModel.AddPlayer(NewPlayer);
+        NewPlayer = new();
+        NewPlayerModal.TriggerUpdate();
+        NewPlayerModal.Update();
+        Update();
+    }
 
     private void AddPlayer()
     {
-        ViewModel.AddPlayer();
-        Update();
+        NewPlayerModal.Show();
     }
 
     private void RemovePlayer(WizardPlayer player)
@@ -61,6 +97,8 @@
 
     protected override void OnInitialized()
     {
+        IsValid = ViewModel?.Validate().IsValid is true;
+
         ViewModel.WhenPropertyChanged
             .Subscribe(_ =>
             {

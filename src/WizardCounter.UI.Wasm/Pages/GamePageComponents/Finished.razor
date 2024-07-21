@@ -1,15 +1,18 @@
-﻿@inherits CoreRxComponent<GameViewModel>
+﻿@inherits CoreRxComponent<WizardGameViewModel>
 @inject TranslateService translate
 
 <div class="flex gap-2 items-center justify-between">
+    <FaSolidFlagCheckered class="icon-sm" />
     <h1 class="text-lg m-0">
         <span>@("results" | translate)</span>
+    </h1>
+    <p class="ms-auto font-medium">
         <span>@ViewModel.MaxRounds</span>
         <span>@("rounds" | translate)</span>
-    </h1>
+    </p>
 </div>
 
-<div class="grid grid-cols-[auto_auto_1fr] gap-2 items-center">
+<div class="overflow-y-auto grid grid-cols-[auto_auto_1fr] gap-2 items-center">
     <div class="flex items-center justify-center">
         <FaSolidRankingStar class="icon-sm" />
     </div>
@@ -43,4 +46,7 @@
             </div>
         </div>
     }
+</div>
+
+<div>
 </div>

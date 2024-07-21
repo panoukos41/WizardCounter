@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Annular.Translate" />
     <PackageReference Include="DynamicData" />
+    <PackageReference Include="Stateless" />
   </ItemGroup>
 
   <ItemGroup>
