@@ -17,28 +17,30 @@
     </p>
 </div>
 
-<div class="overflow-y-auto grid grid-cols-[auto_1fr_auto_auto] gap-2 items-center">
-    <h2 class="m-0">@("player" | translate)</h2>
-    <h2 class="m-0">@("wins" | translate)</h2>
-    <div></div>
-    <div></div>
-    <div class="col-span-full border-t border-on-surface"></div>
+<div class="overflow-y-auto">
+    <div class="grid grid-cols-[auto_1fr_auto_auto] gap-2 items-center">
+        <h2 class="m-0">@("player" | translate)</h2>
+        <h2 class="m-0">@("wins" | translate)</h2>
+        <div></div>
+        <div></div>
+        <div class="col-span-full border-t border-on-surface"></div>
 
-    @foreach (var (playerId, data) in ViewModel.ActiveRound)
-    {
-        <div @key="playerId" class="contents">
-            <div class="flex items-center justify-center bg-primary-container rounded h-9">
-                <p class="font-bold">@(ViewModel.GetPlayerName(playerId))</p>
+        @foreach (var (playerId, data) in ViewModel.ActiveRound)
+        {
+            <div @key="playerId" class="contents">
+                <div class="flex items-center justify-center bg-primary-container rounded h-9">
+                    <p class="font-bold">@(ViewModel.GetPlayerName(playerId))</p>
+                </div>
+                <input class="rounded bg-surface-bright" type="number" @bind-value="data.Wins" disabled />
+                <Button class="btn btn-primary w-9 h-9" OnClick="() => Increase(data)">
+                    <FaSolidPlus class="icon-sm" />
+                </Button>
+                <Button class="btn btn-secondary w-9 h-9" OnClick="() => Decrease(data)">
+                    <FaSolidMinus class="icon-sm" />
+                </Button>
             </div>
-            <input class="rounded bg-surface-bright" type="number" @bind-value="data.Wins" disabled />
-            <Button class="btn btn-primary w-9 h-9" OnClick="() => Increase(data)">
-                <FaSolidPlus class="icon-sm" />
-            </Button>
-            <Button class="btn btn-secondary w-9 h-9" OnClick="() => Decrease(data)">
-                <FaSolidMinus class="icon-sm" />
-            </Button>
-        </div>
-    }
+        }
+    </div>
 </div>
 
 <Button class="btn btn-secondary mx-auto min-w-60 my-2 gap-2 h-12" OnClick="() => ViewModel.Prepare()" disabled="@(!IsValid)">
