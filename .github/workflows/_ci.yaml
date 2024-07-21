@@ -84,7 +84,6 @@ jobs:
         if: ${{ inputs.publish }}
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
           path: artifacts/src/publish/WizardCounter.UI.Wasm/release/wwwroot
 
       - name: Deploy to GitHub Pages

@@ -5,12 +5,12 @@ env:
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches: [main, dev]
-  #   paths:
-  #     - "version.json"
-  #     - "src/**/*.cs"
-  #     - "src/**/*.csproj"
+  push:
+    branches: dev
+    paths:
+      - "version.json"
+      - "src/**/*.cs"
+      - "src/**/*.csproj"
 
 jobs:
   Build:
