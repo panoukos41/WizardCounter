@@ -2,7 +2,7 @@
 
 @using WizardCounter.Pages.GamePageComponents
 
-@inherits CoreRxComponent<GameViewModel>
+@inherits CoreRxComponent<WizardGameViewModel>
 
 @inject ISyncLocalStorageService storage
 
@@ -13,26 +13,30 @@
     return;
 }
 
-@* Found  *@
-@switch (ViewModel.State)
-{
-    case WizardGameState.Initializing:
-        <Initializing ViewModel="ViewModel" />
-        break;
-    case WizardGameState.Initialized:
-    case WizardGameState.Preparing:
-        <Preparing ViewModel="ViewModel" />
-        break;
-    case WizardGameState.Playing:
-        <Playing ViewModel="ViewModel" />
-        break;
-    case WizardGameState.Counting:
-        <Counting ViewModel="ViewModel" />
-        break;
-    case WizardGameState.Finished:
-        <Finished ViewModel="ViewModel" />
-        break;
-}
+<div class="h-full grid grid-rows-[auto_1fr_auto] gap-2">
+    @* Found  *@
+    @switch (ViewModel.State)
+    {
+        case WizardGameState.Initializing:
+            <Initializing ViewModel="ViewModel" />
+            break;
+        case WizardGameState.Preparing:
+            <Preparing ViewModel="ViewModel" />
+            break;
+        case WizardGameState.Betting:
+            <Betting ViewModel="ViewModel" />
+            break;
+        case WizardGameState.Playing:
+            <Playing ViewModel="ViewModel" />
+            break;
+        case WizardGameState.Counting:
+            <Counting ViewModel="ViewModel" />
+            break;
+        case WizardGameState.Finished:
+            <Finished ViewModel="ViewModel" />
+            break;
+    }
+</div>
 
 @code {
     [Parameter]

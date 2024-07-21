@@ -1,72 +1,18 @@
-﻿@inherits CoreRxComponent<GameViewModel>
+﻿@inherits CoreRxComponent<WizardGameViewModel>
 @inject TranslateService translate
 
-<div class="flex gap-2 items-center justify-between">
+<div class="flex gap-2 items-center">
+    <FaSolidWandMagicSparkles class="icon-sm" />
     <h1 class="text-lg m-0">
-        <span>@("bet" | translate)</span>
-        <span>@("round" | translate)</span>
-        <span>@ViewModel.CurrentRound</span>
-        <span> / </span>
-        <span>@ViewModel.MaxRounds</span>
+        <span>@("prepare" | translate)</span>
     </h1>
-    <p class="font-medium">
-        <span>@("total-bets" | translate) @(ViewModel.ActiveRound.Sum(x => x.Value.Bets))</span>
-        <span> / </span>
-        <span>@(ViewModel.CurrentRound)</span>
-        <span></span>
-    </p>
 </div>
 
-<div class="grid grid-cols-[auto_1fr_auto_auto] gap-2 items-center">
-    <h2 class="m-0">@("player" | translate)</h2>
-    <h2 class="m-0">@("bets" | translate)</h2>
-    <div></div>
-    <div></div>
-    <div class="col-span-full border-t border-on-surface"></div>
-
-    @foreach (var (playerId, data) in ViewModel.ActiveRound)
-    {
-        <div @key="playerId" class="contents">
-            <div class="flex items-center justify-center bg-primary-container rounded h-9">
-                <p class="font-bold">@(ViewModel.GetPlayerName(playerId))</p>
-            </div>
-            <input class="rounded bg-surface-bright" type="number" @bind-value="data.Bets" disabled />
-            <Button class="btn btn-primary w-9 h-9" OnClick="() => Increase(data)">
-                <FaSolidPlus class="icon-sm" />
-            </Button>
-            <Button class="btn btn-secondary w-9 h-9" OnClick="() => Decrease(data)">
-                <FaSolidMinus class="icon-sm" />
-            </Button>
-        </div>
-    }
+<div class="self-center">
+    <LottiePlayer Source="lottie/deal-cards.lottie" AutoPlay Loop />
 </div>
 
-<Button class="btn btn-secondary mx-auto mt-2 gap-2 h-10" OnClick="() => ViewModel.Play()">
-    <FaSolidPlay class="icon-sm" />
-    <span>@("play" | translate)</span>
+<Button class="btn btn-secondary mx-auto min-w-60 my-2 gap-2 h-12" OnClick="() => ViewModel.Bet()">
+    <FaSolidDice class="icon-sm inline" />
+    <span>@("bet" | translate)</span>
 </Button>
-
-@code {
-    private bool IsValid { get; set; }
-
-    private void Increase(WizardGameRoundData data)
-    {
-        if (data.Bets >= ViewModel.CurrentRound) return;
-
-        data.Bets += 1;
-        Update();
-    }
-
-    private void Decrease(WizardGameRoundData data)
-    {
-        if (data.Bets <= 0) return;
-
-        data.Bets -= 1;
-        Update();
-    }
-
-    protected override void OnInitialized()
-    {
-        ViewModel.WhenPropertyChanged.Subscribe(_ => Update()).DisposeWith(Disposables);
-    }
-}

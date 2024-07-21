@@ -2,7 +2,7 @@
 @inject TranslateService translate
 
 <div class="flex gap-2 items-center">
-    <FaSolidScroll class="icon-sm" />
+    <FaSolidDice class="icon-sm inline" />
     <h1 class="text-lg m-0">
         <span>@("round" | translate)</span>
         <span>@ViewModel.CurrentRound</span>
@@ -10,7 +10,7 @@
         <span>@ViewModel.MaxRounds</span>
     </h1>
     <p class="ms-auto font-medium">
-        <span>@("total-wins" | translate) @(ViewModel.ActiveRound.Sum(x => x.Value.Wins))</span>
+        <span>@("total-bets" | translate) @(ViewModel.ActiveRound.Sum(x => x.Value.Bets))</span>
         <span> / </span>
         <span>@(ViewModel.CurrentRound)</span>
         <span></span>
@@ -19,7 +19,7 @@
 
 <div class="overflow-y-auto grid grid-cols-[auto_1fr_auto_auto] gap-2 items-center">
     <h2 class="m-0">@("player" | translate)</h2>
-    <h2 class="m-0">@("wins" | translate)</h2>
+    <h2 class="m-0">@("bets" | translate)</h2>
     <div></div>
     <div></div>
     <div class="col-span-full border-t border-on-surface"></div>
@@ -30,7 +30,7 @@
             <div class="flex items-center justify-center bg-primary-container rounded h-9">
                 <p class="font-bold">@(ViewModel.GetPlayerName(playerId))</p>
             </div>
-            <input class="rounded bg-surface-bright" type="number" @bind-value="data.Wins" disabled />
+            <input class="rounded bg-surface-bright" type="number" @bind-value="data.Bets" disabled />
             <Button class="btn btn-primary w-9 h-9" OnClick="() => Increase(data)">
                 <FaSolidPlus class="icon-sm" />
             </Button>
@@ -41,17 +41,9 @@
     }
 </div>
 
-<Button class="btn btn-secondary mx-auto min-w-60 my-2 gap-2 h-12" OnClick="() => ViewModel.Prepare()" disabled="@(!IsValid)">
-    @if (ViewModel.IsFinished)
-    {
-        <FaSolidFlagCheckered class="icon-sm" />
-        <span>@("finish" | translate)</span>
-    }
-    else
-    {
-        <FaSolidWandMagicSparkles class="icon-sm" />
-        <span>@("prepare" | translate)</span>
-    }
+<Button class="btn btn-secondary mx-auto min-w-60 my-2 gap-2 h-12" OnClick="() => ViewModel.Play()">
+    <FaSolidGamepad class="icon-sm" />
+    <span>@("play" | translate)</span>
 </Button>
 
 @code {
@@ -59,23 +51,17 @@
 
     private void Increase(WizardRoundData data)
     {
-        if (data.Wins >= ViewModel.CurrentRound || ViewModel.ActiveRound.Sum(x => x.Value.Wins) == ViewModel.CurrentRound) return;
+        if (data.Bets >= ViewModel.CurrentRound) return;
 
-        data.Wins += 1;
-        Validate();
+        data.Bets += 1;
+        Update();
     }
 
     private void Decrease(WizardRoundData data)
     {
-        if (data.Wins <= 0) return;
+        if (data.Bets <= 0) return;
 
-        data.Wins -= 1;
-        Validate();
-    }
-
-    private void Validate()
-    {
-        IsValid = ViewModel.ActiveRound.Sum(x => x.Value.Wins) == ViewModel.CurrentRound;
+        data.Bets -= 1;
         Update();
     }
 
