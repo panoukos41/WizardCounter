@@ -64,7 +64,21 @@ public sealed class WizardGameViewModel : RxObject
         stateMachine.Configure(WizardGameState.Finished);
     }
 
-    public Result<None> Prepare()
+    public Result<Nothing> Next()
+    {
+        return State switch
+        {
+            WizardGameState.Initializing => Prepare(),
+            WizardGameState.Preparing => Bet(),
+            WizardGameState.Betting => Play(),
+            WizardGameState.Playing => Count(),
+            WizardGameState.Counting => Prepare(),
+            //WizardGameState.Finished =>
+            _ => Problem.Create("Can't transition a finished game")
+        };
+    }
+
+    public Result<Nothing> Prepare()
     {
         if (CurrentRound == MaxRounds)
             return TransitionTo(WizardGameState.Finished);
@@ -72,22 +86,22 @@ public sealed class WizardGameViewModel : RxObject
         return TransitionTo(WizardGameState.Preparing);
     }
 
-    public Result<None> Bet()
+    public Result<Nothing> Bet()
     {
         return TransitionTo(WizardGameState.Betting);
     }
 
-    public Result<None> Play()
+    public Result<Nothing> Play()
     {
         return TransitionTo(WizardGameState.Playing);
     }
 
-    public Result<None> Count()
+    public Result<Nothing> Count()
     {
         return TransitionTo(WizardGameState.Counting);
     }
 
-    public Result<None> Finish()
+    public Result<Nothing> Finish()
     {
         return TransitionTo(WizardGameState.Finished);
     }
@@ -142,18 +156,13 @@ public sealed class WizardGameViewModel : RxObject
         return game.Validate();
     }
 
-    private Result<None> TransitionTo(WizardGameState state)
+    private Result<Nothing> TransitionTo(WizardGameState state)
     {
         if (stateMachine.CanFire(state))
         {
             stateMachine.Fire(state);
-            return None.Value;
+            return Nothing.Value;
         }
-        return new Problem
-        {
-            Title = "Invalid Transition State",
-            Type = "InvalidTransition",
-            Detail = $"Can't transition to {state} from {State}"
-        };
+        return Problem.Create($"Can't transition to {state} from {State}");
     }
 }

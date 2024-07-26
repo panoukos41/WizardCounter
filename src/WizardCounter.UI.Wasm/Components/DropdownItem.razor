@@ -2,11 +2,13 @@
 
 <Ignis.Components.HeadlessUI.MenuItem OnClick="() => OnClick.InvokeAsync()" AdditionalAttributes="Attributes">
     <button @attributes="context.Attributes"
-            class="@Css.Class("flex items-center w-full rounded-md px-2 py-2 text-sm", Class(), context.IsActive ? "bg-primary text-gray-100" : "bg-primary-container text-gray-900")"
+            class="@Css.Class("w-full flex items-center gap-2 rounded-md px-2 py-2 text-sm", Class(), Disabled() ? "btn-secondary" : "")"
             type="button">
         @ChildContent?.Invoke(context.IsActive)
     </button>
 </Ignis.Components.HeadlessUI.MenuItem>
+
+@* class="@Css.Class("group w-full flex items-center gap-2 rounded-md px-2 py-2 text-sm", Class(), ("active", context.IsActive), context.IsActive ? "2bg-primary text-gray-100" : "2bg-primary-container text-gray-900")" *@
 
 @code {
     [Parameter]

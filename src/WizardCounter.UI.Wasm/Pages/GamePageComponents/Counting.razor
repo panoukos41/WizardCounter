@@ -43,18 +43,35 @@
     </div>
 </div>
 
-<Button class="btn btn-secondary mx-auto min-w-60 my-2 gap-2 h-12" OnClick="() => ViewModel.Prepare()" disabled="@(!IsValid)">
-    @if (ViewModel.IsFinished)
+<div class="my-2 flex justify-center gap-1">
+    @if (!ViewModel.IsFinished)
     {
-        <FaSolidFlagCheckered class="icon-sm" />
-        <span>@("finish" | translate)</span>
+        <Dropdown>
+            <DropdownContent class="btn btn-secondary h-12">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+                <FaSolidEllipsisVertical class="icon-sm" />
+            </DropdownContent>
+            <DropdownItems class="bg-primary-container rounded-md min-w-72" Anchor="Anchor.Top | Anchor.Start">
+                <DropdownItem class="group-[active]:bg-red-500" OnClick="() => ViewModel.Finish()" disabled="@(!IsValid)">
+                    <FaSolidFlagCheckered class="icon-sm" />
+                    <span>@("finish" | translate)</span>
+                </DropdownItem>
+            </DropdownItems>
+        </Dropdown>
     }
-    else
-    {
-        <FaSolidWandMagicSparkles class="icon-sm" />
-        <span>@("prepare" | translate)</span>
-    }
-</Button>
+    <Button class="btn btn-secondary min-w-60 gap-2 h-12" OnClick="() => ViewModel.Prepare()" disabled="@(!IsValid)">
+        @if (ViewModel.IsFinished)
+        {
+            <FaSolidFlagCheckered class="icon-sm" />
+            <span>@("finish" | translate)</span>
+        }
+        else
+        {
+            <FaSolidWandMagicSparkles class="icon-sm" />
+            <span>@("prepare" | translate)</span>
+        }
+    </Button>
+</div>
 
 @code {
     private bool IsValid { get; set; }
