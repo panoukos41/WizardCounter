@@ -17,7 +17,7 @@
     <PackageReference Include="Ignis.Components.WebAssembly" />
     <PackageReference Include="Ignis.Utils" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
     <PackageReference Include="OneOf" />
     <PackageReference Include="P41.FontAwesome" />
     <PackageReference Include="System.Text.Json" />

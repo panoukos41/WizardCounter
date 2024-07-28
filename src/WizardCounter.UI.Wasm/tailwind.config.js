@@ -3,7 +3,7 @@ const { withMaterialColors } = require("tailwind-material-colors");
 
 module.exports = withMaterialColors(
   {
-    darkMode: ['selector', '[dark]'],
+    darkMode: ["selector", "[dark]"],
     content: [
       "./**/*.{razor,html,cshtml}"
     ],
