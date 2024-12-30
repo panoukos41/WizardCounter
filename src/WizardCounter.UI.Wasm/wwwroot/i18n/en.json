@@ -4,6 +4,7 @@
     "description": "Sorry, there is nothing at this address."
   },
   "home": "Home",
+  "deck-size": "Deck Size",
   "player": "Player",
   "player-name": "Player Name",
   "players": "Players",

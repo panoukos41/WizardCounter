@@ -19,7 +19,9 @@ public sealed class WizardGameViewModel : RxObject
         private set => game.State = value;
     }
 
-    public int MaxRounds => (int)Math.Floor(54f / game.Players.Count);
+    public int DeckSize => game.DeckSize;
+
+    public int MaxRounds => (int)Math.Floor((decimal)game.DeckSize / game.Players.Count);
 
     public bool IsFinished => State is WizardGameState.Finished || game.Rounds.Count == MaxRounds;
 
@@ -109,6 +111,20 @@ public sealed class WizardGameViewModel : RxObject
     public string GetPlayerName(Uuid playerId)
     {
         return game.Players[playerId].Name;
+    }
+
+    public Result<None> SetDeckSize(int size)
+    {
+        if (State is not WizardGameState.Initializing) return new Problem
+        {
+            Title = "Invalid Operation",
+            Type = "InvalidOperation",
+            Detail = "Can't change deck size in an already initialized game."
+        };
+
+        game.DeckSize = size;
+        RaisePropertyChanged();
+        return None.Value;
     }
 
     public Result<WizardPlayer> AddPlayer(WizardPlayer? player = null)
