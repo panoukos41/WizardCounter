@@ -1,0 +1,61 @@
+﻿@inherits CoreRxComponent<WizardGameViewModel>
+@inject TranslateService translate
+
+<div class="flex gap-2 items-center">
+    <FaSolidGamepad class="icon-sm" />
+    <h1 class="text-lg m-0">
+        <span>@("play" | translate) </span>
+        <span>@("round" | translate): </span>
+        <span>@ViewModel.CurrentRound</span>
+    </h1>
+</div>
+
+<div class="self-center">
+    <LottiePlayer Source="lottie/wizard.lottie" AutoPlay Loop />
+</div>
+
+<div class="my-2 flex justify-center gap-1">
+    <Button class="btn btn-secondary min-w-60 gap-2 h-12" OnClick="() => ViewModel.Count()">
+        <FaSolidScroll class="icon-sm" />
+        <span>@("count" | translate)</span>
+    </Button>
+
+    <Dropdown>
+        <DropdownContent class="btn btn-secondary h-12">
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+            <FaSolidEllipsisVertical class="icon-sm" />
+        </DropdownContent>
+        <DropdownItems class="bg-primary-container rounded-md min-w-72" Anchor="Anchor.Top | Anchor.End">
+            <DropdownItem class="group-[active]:bg-red-500" OnClick="() => showBetsModal.Show()">
+                <FaSolidDice class="icon-sm" />
+                <span>@("show-bets" | translate)</span>
+            </DropdownItem>
+        </DropdownItems>
+    </Dropdown>
+</div>
+
+<Modal @ref="showBetsModal">
+    <div class="overflow-y-auto">
+        <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
+            <h2 class="m-0">@("player" | translate)</h2>
+            <h2 class="m-0">@("bets" | translate)</h2>
+            <div></div>
+            <div></div>
+            <div class="col-span-full border-t border-on-surface"></div>
+
+            @foreach (var (playerId, data) in ViewModel.ActiveRound)
+            {
+                <div @key="playerId" class="contents">
+                    <div class="flex items-center justify-center bg-primary-container rounded h-9">
+                        <p class="font-bold">@(ViewModel.GetPlayerName(playerId))</p>
+                    </div>
+                    <input class="rounded bg-surface-bright" type="number" @bind-value="data.Bets" disabled />
+                </div>
+            }
+        </div>
+    </div>
+</Modal>
+
+@code {
+    private Modal showBetsModal = null!;
+}

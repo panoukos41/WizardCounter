@@ -24,6 +24,8 @@ public sealed record class WizardGame : IValid<WizardGame>
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public WizardGameState State { get; set; }
 
+    public int DeckSize { get; set; } = 54;
+
     public WizardPlayerCollection Players { get; set; } = [];
 
     public WizardRoundCollection Rounds { get; set; } = [];
@@ -32,6 +34,10 @@ public sealed record class WizardGame : IValid<WizardGame>
     {
         data.RuleFor(x => x.Name)
             .Length(1, 50);
+
+        data.RuleFor(x => x.DeckSize)
+            .GreaterThanOrEqualTo(54)
+            .LessThanOrEqualTo(120);
 
         data.RuleFor(x => x.Players).Must(x => x.Count is > 1)
             .WithMessage("You need two players and more.");

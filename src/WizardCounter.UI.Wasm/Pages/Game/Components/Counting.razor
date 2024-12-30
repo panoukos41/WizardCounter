@@ -44,21 +44,6 @@
 </div>
 
 <div class="my-2 flex justify-center gap-1">
-    @if (!ViewModel.IsFinished)
-    {
-        <Dropdown>
-            <DropdownContent class="btn btn-secondary h-12">
-                <i class="fa-solid fa-ellipsis-vertical"></i>
-                <FaSolidEllipsisVertical class="icon-sm" />
-            </DropdownContent>
-            <DropdownItems class="bg-primary-container rounded-md min-w-72" Anchor="Anchor.Top | Anchor.Start">
-                <DropdownItem class="group-[active]:bg-red-500" OnClick="() => ViewModel.Finish()" disabled="@(!IsValid)">
-                    <FaSolidFlagCheckered class="icon-sm" />
-                    <span>@("finish" | translate)</span>
-                </DropdownItem>
-            </DropdownItems>
-        </Dropdown>
-    }
     <Button class="btn btn-secondary min-w-60 gap-2 h-12" OnClick="() => ViewModel.Prepare()" disabled="@(!IsValid)">
         @if (ViewModel.IsFinished)
         {
@@ -71,6 +56,22 @@
             <span>@("prepare" | translate)</span>
         }
     </Button>
+
+    @if (!ViewModel.IsFinished)
+    {
+        <Dropdown>
+            <DropdownContent class="btn btn-secondary h-12">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+                <FaSolidEllipsisVertical class="icon-sm" />
+            </DropdownContent>
+            <DropdownItems class="bg-primary-container rounded-md min-w-72" Anchor="Anchor.Top | Anchor.End">
+                <DropdownItem class="group-[active]:bg-red-500" OnClick="() => ViewModel.Finish()" disabled="@(!IsValid)">
+                    <FaSolidFlagCheckered class="icon-sm" />
+                    <span>@("finish" | translate)</span>
+                </DropdownItem>
+            </DropdownItems>
+        </Dropdown>
+    }
 </div>
 
 @code {

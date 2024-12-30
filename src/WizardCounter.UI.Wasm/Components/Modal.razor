@@ -29,7 +29,7 @@
                     LeaveTo="opacity-0 scale-95"
                     Context="transition">
 
-                    <div class="@Css.Class("w-full max-h-full rounded-2xl bg-secondary-container overflow-y-auto p-6 m-4", Class() ?? "self-center justify-self-center", transition.CssClass)" @onclick:stopPropagation>
+                    <div class="@Css.Class("w-full max-h-full rounded-2xl bg-secondary-container overflow-y-auto p-6 m-4", this.Class() ?? "self-center justify-self-center", transition.CssClass)" @onclick:stopPropagation>
                         <ReactiveSection For="updateExpression" AsComponent="typeof(Fragment)">
                             @(ChildContent?.Invoke(this))
                         </ReactiveSection>

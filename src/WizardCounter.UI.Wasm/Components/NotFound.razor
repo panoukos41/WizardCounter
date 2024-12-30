@@ -1,7 +1,7 @@
 @inherits CoreComponent
 @inject TranslateService translate
 
-<div class="@Class("flex flex-col")">
+<div class="@this.Class("flex flex-col")">
     <LottiePlayer class="max-h-80" Source="/lottie/not-found.lottie" AutoPlay Loop />
     <a class="mx-auto mt-2 btn btn-primary" href="">@("home" | translate)</a>
 </div>
