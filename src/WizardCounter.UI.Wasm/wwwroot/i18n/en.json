@@ -3,8 +3,25 @@
     "title": "Not Found",
     "description": "Sorry, there is nothing at this address."
   },
+  "settings": {
+    "title": "Settings",
+    "app.title": "Application",
+    "theme": {
+      "title": "Theme",
+      "auto": "Auto",
+      "dark": "Dark",
+      "light": "Light"
+    },
+    "lang": {
+      "title": "Language",
+      "en": "English",
+      "el": "Ελληνικά"
+    },
+    "game.title": "Game"
+  },
   "home": "Home",
   "deck-size": "Deck Size",
+  "default-deck-size": "Default Deck Size",
   "player": "Player",
   "player-name": "Player Name",
   "players": "Players",
@@ -26,7 +43,6 @@
   "total-bets": "Total Bets",
   "bets": "Bets",
   "play": "Play",
-  "settings": "Settings",
   "game-name": "Game Name",
   "submit": "Submit",
   "theme": "Theme",

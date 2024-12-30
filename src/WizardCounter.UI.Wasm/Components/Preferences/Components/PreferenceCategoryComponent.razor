@@ -1,0 +1,21 @@
+﻿@inherits Abstract.PreferenceCollectionComponentBase<PreferenceCategory>
+
+<div class="pb-3 space-y-1 border-on-surface">
+    <div>
+        <div class="flex items-center gap-2">
+            @if (GetIcon() is { } icon)
+            {
+                <i class="@icon"></i>
+            }
+            <h2 class="m-0">@GetTitle()</h2>
+        </div>
+        @if (GetDescription() is { } desc)
+        {
+            <p>@desc</p>
+        }
+    </div>
+    @foreach (var preference in Preference)
+    {
+        @RenderPreference(preference)
+    }
+</div>

@@ -1,0 +1,26 @@
+﻿@inherits Abstract.PreferenceValueComponentBase<EditTextPreference>
+@inject TranslateService translate
+
+<div>
+    <div>
+        <label for="@Id" class="text-on-surface">@Title</label>
+    </div>
+    <input id="@Id" type="text" title="@Title" class="w-full rounded bg-primary px-2 py-1" value="@Preference.Value" @oninput="OnChange" />
+</div>
+
+@code {
+    private string Title { get; set; } = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        Title = Preference.Title | translate;
+    }
+
+    private void OnChange(ChangeEventArgs e)
+    {
+        if (e.Value is string arg)
+        {
+            Preference.Value = arg;
+        }
+    }
+}

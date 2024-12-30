@@ -1,4 +1,8 @@
-﻿@inherits CoreRxComponent<WizardGameViewModel>
+﻿@using Core.Preferences
+@using WizardCounter.Common
+
+@inherits CoreRxComponent<WizardGameViewModel>
+@inject PreferenceManager preferences
 @inject TranslateService translate
 
 <div>
@@ -112,7 +116,7 @@
 
     protected override void OnInitialized()
     {
-        IsValid = ViewModel?.Validate().IsValid is true;
+        IsValid = ViewModel.Validate().IsValid is true;
 
         ViewModel.WhenPropertyChanged
             .Subscribe(_ =>
@@ -121,5 +125,10 @@
                 Update();
             })
             .DisposeWith(Disposables);
+
+        if (ViewModel.DeckSize is 54)
+        {
+            ViewModel.SetDeckSize(preferences.GetValue<int>(Preferences.DeckSize, 54));
+        }
     }
 }
