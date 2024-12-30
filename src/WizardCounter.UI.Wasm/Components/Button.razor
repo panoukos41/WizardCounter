@@ -47,10 +47,10 @@
 
     public OneOf<bool, Func<bool>> If { get; set; } = true;
 
-    private string TypeAttribute => GetAttributeOrDefault<string>("type", "button");
+    private string TypeAttribute => this.GetAttributeOrDefault<string>("type", "button");
     
-    private bool DisabledAttribute => GetAttributeOrDefault<bool>("disabled", false) || IsLoading;
+    private bool DisabledAttribute => this.GetAttributeOrDefault<bool>("disabled", false) || IsLoading;
 
     private string? ClassAttribute
-        => Css.Class(TryGetAttribute<string>("class"), ("cursor-not-allowed relative", IsLoading));
+        => Css.Class(this.TryGetAttribute<string>("class"), ("cursor-not-allowed relative", IsLoading));
 }
