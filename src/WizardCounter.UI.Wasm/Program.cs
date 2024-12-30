@@ -2,7 +2,7 @@ using Annular.Translate;
 using Annular.Translate.Abstract;
 using Annular.Translate.HttpLoader;
 using Blazored.LocalStorage;
-using Core.Blazor;
+using Core.Preferences;
 using Ignis.Components.HeadlessUI;
 using Ignis.Components.WebAssembly;
 using Microsoft.AspNetCore.Components.Web;
@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
 using System.Diagnostics.CodeAnalysis;
 using System.Reactive.Threading.Tasks;
+using WizardCounter.Common;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 var services = builder.Services;
@@ -29,6 +30,15 @@ services.AddScoped<TranslateLoader, TranslateHttpLoader>();
 services.AddSingleton(new TranslateHttpLoaderOptions { Prefix = "i18n/" });
 services.AddScoped<TranslateService>();
 
+services.AddScoped<LocalStorageConfigurationProvider>();
+services.AddScoped<PreferenceManager>(sp =>
+{
+    var localStorage = sp.GetRequiredService<LocalStorageConfigurationProvider>();
+    var manager = new PreferenceManager();
+    manager.Sources.Add(localStorage);
+    return manager;
+});
+
 var app = builder.Build();
 
 await InitializeLang(app);
@@ -44,14 +54,14 @@ static Task InitializeLang(WebAssemblyHost app)
 
     translate.Langs.AddRange(["en", "el"]);
 
-    var lang = localStorage.GetItem<string>("lang");
+    var lang = localStorage.GetItemAsString("lang");
     lang ??= js.GetBrowserLang();
 
     if (lang is null || !translate.Langs.Contains(lang))
     {
         lang = "en";
     }
-    localStorage.SetItem("lang", lang);
+    localStorage.SetItemAsString("lang", lang);
     return translate.SetCurrentLang(lang).ToTask();
 }
 

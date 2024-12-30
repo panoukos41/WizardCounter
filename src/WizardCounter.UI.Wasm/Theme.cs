@@ -4,7 +4,7 @@ using System.Runtime.Versioning;
 namespace WizardCounter;
 
 [SupportedOSPlatform("browser")]
-public partial class Theme
+public static partial class Theme
 {
     private const string name = "WizardCounter.Theme";
     private static int imported;

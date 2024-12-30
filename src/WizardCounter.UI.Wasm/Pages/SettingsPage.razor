@@ -1,38 +1,35 @@
-﻿@page "/settings"
+﻿@using Core.Preferences
+@using Core.Preferences.Controls
+@using WizardCounter.Common
+@using WizardCounter.Components.Preferences.Pages
+
+@page "/settings"
 @inherits CoreComponent
 @inject TranslateService translate
+@inject PreferenceManager manager
 
-<div class="space-y-4 divide-y">
-    <div class="space-y-1">
-        <h3>@("theme" | translate)</h3>
-        <div>
-            <select class="w-full rounded bg-primary px-2 py-1" value="@Theme.GetTheme()" @onchange="OnThemeChange">
-                <option value="auto">@("auto" | translate)</option>
-                <option value="dark">@("dark" | translate)</option>
-                <option value="light">@("light" | translate)</option>
-            </select>
-        </div>
-    </div>
-
-</div>
-
+<PreferenceScreenPage Screen="Preferences.Screen" />
 
 @code {
-
-
     protected override void OnInitialized()
     {
-        ShellContext.Title = "settings" | translate;
-    }
+        ShellContext.Title = "settings.title" | translate;
+        Preferences.Screen.TitleTransformer = v => v | translate;
+        Preferences.Screen.DescriptionTransformer = v => v is { } ? v | translate : v;
+        Preferences.Screen.SummaryTransformer = v => v | translate;
 
-    public void OnThemeChange(ChangeEventArgs e)
-    {
-        Action execute = e.Value switch
-        {
-            "dark" => Theme.SetDark,
-            "light" => Theme.SetLight,
-            _ => Theme.SetAuto
-        };
-        execute();
+        Preferences.Screen
+            .WhenValuePreferenceChanged(Preferences.Theme)
+            .Throttle(TimeSpan.FromMilliseconds(100))
+            .Subscribe(p => Theme.UpdateDom())
+            .DisposeWith(this);
+
+        // Preferences.Screen
+        //     .WhenValuePreferenceChanged(Preferences.Language)
+        //     .Throttle(TimeSpan.FromMilliseconds(100))
+        //     .Subscribe(p => Theme.UpdateDom())
+        //     .DisposeWith(this);
+
+        Preferences.Screen.Initialize(manager);
     }
 }
